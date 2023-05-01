@@ -30,10 +30,11 @@
 <script>
 import axios from "axios";
 
+// todo: revise the role description -> roles, play.js don't have role description
 function getRoleDescription() {
     let vm = this;
     return axios
-        .get(process.env.VUE_APP_BACKEND_URL + "play/" + vm.$store.state.gameID + "/RoleDescription")
+        .get(process.env.VUE_APP_BACKEND_URL + "play/" + vm.$store.state.gameID + "/roleDescription")
         .then((response) => {
             if (response.status === 200) {
                 vm.RoleDescription = response.data;

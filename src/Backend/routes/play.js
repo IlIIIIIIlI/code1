@@ -31,5 +31,6 @@ router.get('/:gameID/round', games.getRoundDescription);
 router.get('/:gameID/round-status', games.getRoundStatus);
 router.get('/:gameID/round-outcome', games.getRoundOutcome);
 router.get('/:gameID/game-outcome', games.getGameOutcome);
+router.get('/:gameID/round-level', games.getRoundLevel);
 
 module.exports = router;
