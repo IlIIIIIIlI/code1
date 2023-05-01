@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: agogear/chatgpt-pr-review@0.0.2
         with:
-          openai_max_tokens: 1000
+          openai_max_tokens: 300
           files: "*.vue"
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
