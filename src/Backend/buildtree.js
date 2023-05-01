@@ -1,8 +1,8 @@
 // We build the decision tree here, app.js should call this...
-var QuestionTree = require('./QuestionTree');
-var Question = require('./Question');
-var Option = require('./Option');
-var Company = require('./Company');
+var QuestionTree = require('./objects/QuestionTree');
+var Question = require('./objects/Question');
+var Option = require('./objects/Option');
+var Company = require('./objects/Company');
 
 function buildTree() {
     var cons1 = new Company(50);
