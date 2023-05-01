@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import PlayerInfo from "./GlobalComponents/PlayerInfo.vue"; // 引入 PlayerInfo 组件
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faPlane)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component("PlayerInfo", PlayerInfo);
 
 const store = new Vuex.Store({
   state: {
@@ -23,7 +25,9 @@ const store = new Vuex.Store({
     gameID: "",
     roleID: "",
     // assist with rejoining the game at the right page
-    checkpoint: ""
+    checkpoint: "",
+    // zuo xia jiao de na ge dong xi
+    showPlayerInfo: true,
   },
   mutations: {
     setGame(state, payload) {
@@ -37,12 +41,32 @@ const store = new Vuex.Store({
 
     setCheckpoint(state, payload) {
       state.checkpoint = payload.checkpoint;
-    }
+    },
+
+    togglePlayerInfo(state) {
+      state.showPlayerInfo = !state.showPlayerInfo;
+    },
+
+    setPlayerInfoVisibility(state, visible) {
+      state.showPlayerInfo = visible;
+    },
   },
   plugins: [createPersistedState()]
 });
 
 Vue.config.productionTip = false;
+
+// for show zuo xia jiao to pages other than menu
+router.beforeEach((to, from, next) => {
+  // hide for home
+  if (to.name === "Home") {
+    store.commit("setPlayerInfoVisibility", false);
+  } else {
+    // or show my playerinfo
+    store.commit("setPlayerInfoVisibility", true);
+  }
+  next();
+});
 
 new Vue({
   router,

@@ -1,6 +1,7 @@
 <template>
     <v-app :style="{background: $vuetify.theme.themes.light.background}">
         <v-content>
+          <PlayerInfo v-show="showPlayerInfo" /> <!-- 使用 v-show 控制显示隐藏 -->
             <div id="background-wrap">
                 <div class="x1">
                     <div class="cloud"></div>
@@ -85,7 +86,7 @@
                                         Eric Sciberras ·
                                         Rainer Selby ·
                                         Christina Xu
-                                       
+
 
                                         <br /><br />
                                         <strong>Supervisor:</strong> Dr Mauro Mello Jr (Version 2.0)<br />
@@ -112,7 +113,7 @@
             </div>
             <div id="content">
                 <transition name="slide-fade" mode="out-in">
-                    <router-view></router-view>
+                  <router-view></router-view>
                 </transition>
             </div>
         </v-content>
@@ -341,5 +342,10 @@ html {
                 showVideo: false
             }
         },
+      computed: {
+        showPlayerInfo() {
+          return this.$store.state.showPlayerInfo;
+        }
+      }
     }
 </script>
