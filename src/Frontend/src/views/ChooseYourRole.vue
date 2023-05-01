@@ -66,6 +66,19 @@
       </router-link>
     </div>
 
+    <v-dialog v-model="errorDialog" max-width="400">
+      <v-card>
+        <v-card-title>Error</v-card-title>
+        <v-card-text>
+          This role has already been selected by another player. Please choose another role.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="errorDialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </div>
 </template>
 
@@ -139,17 +152,18 @@ function updateRoles() {
 
 
 function chooseRole(roleButtonId) {
-
   this.loading = true;
 
   // request role
   let vm = this;
   return axios
       .post(
-          process.env.VUE_APP_BACKEND_URL + "play/choose-role/" + vm.$store.state.gameID, {
+          process.env.VUE_APP_BACKEND_URL + "play/choose-role/" + vm.$store.state.gameID,
+          {
             name: vm.$store.state.playerName,
-            roleID: roleButtonId
-          }, {
+            roleID: roleButtonId,
+          },
+          {
             headers: {
               "Content-type": "application/json",
             },
@@ -165,17 +179,22 @@ function chooseRole(roleButtonId) {
           vm.waiting = true;
           vm.loading = false;
           updateRoles();
-        } else if (response.status === 403) {
-          // someone has chosen this role
-          // update available roles straight away
-          vm.loading = false;
-          updateRoles();
         }
       })
       .catch((error) => {
-        console.log("error: " + error);
+        if (error.response && error.response.status === 403) {
+          // 403 error occurred
+          vm.loading = false;
+          updateRoles();
+
+          // Show the error dialog
+          vm.errorDialog = true;
+        } else {
+          console.log("error: " + error);
+        }
       });
 }
+
 
 export default {
   data() {
@@ -186,13 +205,15 @@ export default {
       roles: [],
       roleTexts: {},
       timer: "",
-      loading: false
+      loading: false,
+      errorDialog: false,
     };
   },
+
   created() {
     this.getRoleTexts();
     this.updateRoles();
-    this.timer = setInterval(this.updateRoles, 1000);
+    this.timer = setInterval(this.updateRoles, 5000);
   },
   methods: {
     getRoleTexts,

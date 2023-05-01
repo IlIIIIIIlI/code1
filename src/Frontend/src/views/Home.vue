@@ -46,7 +46,10 @@
                     <v-text-field v-model="gameID" label="Game ID" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field v-model="player" label="Player" required></v-text-field>
+                    <v-text-field v-model="playerName" label="Player Name" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="roleID" label="Role ID" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -119,6 +122,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "home",
   data() {
@@ -126,29 +131,51 @@ export default {
       helpDialog: false,
       rejoinDialog: false,
       gameID: "",
-      player: "",
+      // player: "",
+      playerName: "",
+      roleID: "",
       playerNotFoundSnackbar: false,
     }
   },
   methods: {
     rejoinGame() {
-      this.$store.commit("setGame", {
-        playerName: this.player,
-        gameID: this.gameID,
-      });
+      // You can add some validation logic here to ensure the user has entered a valid gameID, playerName, and roleID.
 
-      // updates the values
-      this.$store.commit("setRole", {roleID: this.$store.state.roleID});
-      this.$store.commit("setCheckpoint", {checkpoint: this.$store.state.checkpoint});
+      let vm = this;
+      axios
+          .get(process.env.VUE_APP_BACKEND_URL + "play/" + vm.gameID + "/status")
+          .then((response) => {
+            const gameData = response.data;
 
-      // clse the dialog
-      this.rejoinDialog = false;
+            const playerExists = gameData.players.some(player => player.player === vm.playerName);
 
-      // this.$router.push() back to game
-      this.$router.push({path: this.$store.state.checkpoint});
+            if (!playerExists) {
+              vm.playerNotFoundSnackbar = true;
+              return;
+            }
+
+            vm.$store.commit("setGame", {
+              playerName: vm.playerName,
+              gameID: vm.gameID,
+            });
+
+            // Assuming the roleID and checkpoint from the user input are correct, you can update them directly here.
+            // Note that the code here assumes the roleID is a number; if not, make the necessary adjustments.
+            const roleID = parseInt(vm.roleID, 10);
+            const checkpoint = "Discussion"; // Assuming the checkpoint is "discussion"
+
+            vm.$store.commit("setRole", {roleID});
+            vm.$store.commit("setCheckpoint", {checkpoint});
+
+            vm.rejoinDialog = false;
+            vm.$router.push({path: vm.$store.state.checkpoint});
+          })
+          .catch((error) => {
+            console.error(error);
+            // Handle error, show an error message or do something else
+          });
     },
   },
-
 };
 
 </script>

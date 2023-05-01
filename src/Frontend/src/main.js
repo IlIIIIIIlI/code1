@@ -58,15 +58,19 @@ Vue.config.productionTip = false;
 
 // for show zuo xia jiao to pages other than menu
 router.beforeEach((to, from, next) => {
-  // hide for home
-  if (to.name === "Home") {
+  // 定义一个数组，包含需要隐藏的页面名称
+  const hiddenPages = ["Home", "Waiting", "Background", "NewGame", "JoinGame", "ChooseYourRole"];
+
+  // 检查to.name是否在hiddenPages数组中
+  if (hiddenPages.includes(to.name)) {
     store.commit("setPlayerInfoVisibility", false);
   } else {
-    // or show my playerinfo
+    // 或显示my playerinfo
     store.commit("setPlayerInfoVisibility", true);
   }
   next();
 });
+
 
 new Vue({
   router,

@@ -24,9 +24,9 @@
     <div v-else class="my-6">
       <v-card class="mx-auto" max-width="600" outlined>
         <v-card-text>
-          <p v-if="!reveal && !waiting && questionID>=20 && questionID<=27" class="my-1 body-2 font-weight-regular">As a
+          <p v-if="!reveal && !waiting && questionID>=6061 && questionID<=6131" class="my-1 body-2 font-weight-regular">As a
             group, discuss the following decision. You have 150s to finish your choice.</p>
-          <p v-else-if="!reveal && !waiting && questionID>100" class="my-1 body-2 font-weight-regular">Below is a
+          <p v-else-if="!reveal && !waiting && questionID > 100 && questionID < 6061" class="my-1 body-2 font-weight-regular">Below is a
             personal question, you have 60s to finish your choice.</p>
 
           <p v-else-if="!reveal && waiting" class="my-1 body-2 font-weight-regular">
@@ -60,7 +60,7 @@
               <v-btn class="mt-1 mb-5" color="primary" type="submit" :disabled="waiting">Submit my choice</v-btn>
 
 
-              <Timer v-slot="timeObj" :time=150 v-if="questionID>=20 && questionID<=27">
+              <Timer v-slot="timeObj" :time=150 v-if="questionID >= 6061 && questionID <= 6131">
                 <div class="timer"/>
                 <div class="count-down">
                   <div class="icon"></div>
@@ -266,7 +266,7 @@ export default {
   created() {
     this.getQuestion();
     this.roundStatus();
-    this.timer = setInterval(this.roundStatus, 1000);
+    this.timer = setInterval(this.roundStatus, 2000);
   },
   /**watch: {
             timerCount: {

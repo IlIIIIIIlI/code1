@@ -26,9 +26,11 @@
     "vue": "^2.6.11",
     "vue-animejs": "^2.1.1",
     "vue-circular-count-down-timer": "^2.0.0",
+    "vue-drag-resize": "^1.5.4",
     "vue-responsive-video-background-player": "^1.3.1",
     "vue-router": "^3.1.6",
     "vue-sequential-entrance": "^1.1.3",
+    "vuedraggable": "^2.24.3",
     "vuejs-countdown-timer": "^2.1.3",
     "vuetify": "^2.2.11",
     "vuex-persistedstate": "^3.1.0"
